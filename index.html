@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Weather-App</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background: url(images/bg-image.jpg) no-repeat;
+            background-size: cover;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <form class="col-md-6 m-auto py-5">
+            <div class="input-group mb-3">
+                <input id="input" type="text" class="form-control" placeholder="Enter a location for Weather ...">
+                <div class="input-group-append">
+                    <button id="search-btn" type="button" class="btn btn-danger">Search</button>
+                </div>
+            </div>
+        </form>
+        <div class="weather-status text-white text-center">
+            <img id="icon" src="https://openweathermap.org/img/wn/02d@2x.png" alt="">
+            <h1 id="cityName">City Name</h1>
+            <h3 id="tempF">Temparature</h3>
+            <h1 id="weather" class="lead">Weather</h1>
+        </div>
+    </div>
+<script>
+    const search = document.getElementById("search-btn");
+    search.addEventListener('click', function(){
+        // console.log('button clicked');
+        const inputValue = document.getElementById('input').value;
+        // console.log(inputValue);
+        fetch('http://api.openweathermap.org/data/2.5/weather?q='+inputValue+'&APPID=b2833c70038425d08ffa8e15272598cd')
+        .then(res => res.json())
+        .then(data => {
+            // console.log(data);
+            const cityName = data.name;
+            const tempF = data.main.temp;
+            const temp = tempF - 273.15;
+            const weather = data.weather[0].description;
+            const icon = data.weather[0].icon;
+
+            // displayContent
+            document.getElementById('cityName').innerText = cityName;
+            document.getElementById('tempF').innerHTML = temp.toFixed(2) + "&deg;C";
+            document.getElementById('weather').innerHTML = weather;
+            document.getElementById('icon').innerHTML = icon;
+        });
+
+        });
+
+</script>
+</body>
+
+</html>
